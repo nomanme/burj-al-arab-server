@@ -5,6 +5,11 @@ const admin = require('firebase-admin');
 require('dotenv').config()
 // console.log(process.env.DB_PASS)
 const port = 5000;
+
+app.get('/', (req, res) => {
+    res.send('hello mongodb')
+})
+
 const app = express();
 
 app.use(cors());
