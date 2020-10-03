@@ -4,7 +4,7 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 require('dotenv').config()
 // console.log(process.env.DB_PASS)
-const port = 5000;
+const port = 6000;
 
 // app.get('/', (req, res) => {
 //     res.send('hello mongodb')
@@ -30,7 +30,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 client.connect(err => {
     const bookings = client.db("burjAlArab").collection("bookings");
-
+    console.log(err)
     app.post('/addBooking', (req, res) => {
         const newBooking = req.body;
         bookings.insertOne(newBooking)
