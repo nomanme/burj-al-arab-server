@@ -6,15 +6,14 @@ require('dotenv').config()
 // console.log(process.env.DB_PASS)
 const port = 5000;
 
-app.get('/', (req, res) => {
-    res.send('hello mongodb')
-})
+// app.get('/', (req, res) => {
+//     res.send('hello mongodb')
+// })
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json())
-
 
 var serviceAccount = require("./configs/burj-al-arab-1331c-firebase-adminsdk-ocb9j-a46ccd1020.json");
 
@@ -45,13 +44,15 @@ client.connect(err => {
 
 app.get('/bookings', (req, res) => {
     const bearer = req.headers.authorization;
+    console.log(bearer)
     if (bearer && bearer.startsWith('Bearer ')) {
         const idToken = bearer.split(' ')[1];
-
+        console.log(idToken)
         admin.auth().verifyIdToken(idToken)
             .then(function (decodedToken) {
                 const tokenEmail = decodedToken.email;
                 const queryEmail = req.query.email;
+                console.log(queryEmail === tokenEmail)
                 if (tokenEmail == queryEmail) {
                     bookings.find({ email: queryEmail })
                         .toArray((err, documents) => {
@@ -69,7 +70,6 @@ app.get('/bookings', (req, res) => {
         res.status(401).send('un-authorized access')
     }
 })
-
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
